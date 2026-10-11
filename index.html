@@ -1,0 +1,750 @@
+<title>Chembur Engineering Works</title>
+<meta name="description" content="CNC milling, CNC turning, fabrication and fixtures in Chembur, Mumbai. Send a drawing and get a price and lead time.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config = {
+  corePlugins: { preflight: false },
+  theme: { extend: { fontFamily: {
+    display: ['"Big Shoulders Display"', '"Arial Narrow"', 'Impact', 'sans-serif'],
+    sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+    mono: ['"IBM Plex Mono"', 'ui-monospace', 'Menlo', 'monospace']
+  } } }
+};
+</script>
+<style>
+/* Layout concept: a drawing sheet. Graph-paper ground, one dark machine window as the hero,
+   machine-tool yellow as the single loud colour, title block as the footer. */
+:root{
+  --paper:#EDEFEA; --paper-2:#E1E5DE; --ink:#0A1020; --ink-soft:#485168; --line:#C3C9C0;
+  --blue:#1730E0; --yellow:#FFC400; --on-yellow:#0A1020; --edge:#0A1020; --focus:#1730E0;
+  --panel:#0C111B; --panel-2:#141B28; --panel-ink:#E9EDF5; --panel-soft:#9BA6BB; --panel-line:#273144;
+  --f-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A0E16; --paper-2:#101622; --ink:#EDF0F6; --ink-soft:#A4AEC2; --line:#232C3E;
+    --blue:#93A5FF; --edge:#FFC400; --focus:#FFC400; --panel:#05080D; --panel-2:#0D131D; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A0E16; --paper-2:#101622; --ink:#EDF0F6; --ink-soft:#A4AEC2; --line:#232C3E;
+  --blue:#93A5FF; --edge:#FFC400; --focus:#FFC400; --panel:#05080D; --panel-2:#0D131D; color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure,table{margin:0}
+ul,ol{padding:0;list-style:none}
+img,svg,canvas{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+section[id]{scroll-margin-top:5rem}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:1rem;top:-4rem;z-index:100;background:var(--yellow);color:var(--on-yellow);padding:.7rem 1rem;font-weight:600;border:2px solid var(--ink)}
+.skip:focus{top:1rem}
+.wrap{width:100%;max-width:80rem;margin-inline:auto;padding-inline:clamp(1rem,4vw,2.5rem)}
+.mono{font-family:var(--f-mono)}
+.eyebrow{font:500 .75rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);display:inline-flex;align-items:center;gap:.6rem}
+.eyebrow .dot{width:.6rem;height:.6rem;background:var(--yellow);border:2px solid var(--ink);display:inline-block}
+.h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(2.1rem,5.2vw,3.7rem);line-height:.98;letter-spacing:.005em;text-wrap:balance}
+.lead{font-size:clamp(1.05rem,2.2vw,1.2rem);color:var(--ink-soft);max-width:34rem;text-wrap:pretty}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:3rem;padding:0 1.3rem;border:2px solid var(--ink);background:transparent;color:var(--ink);font-weight:600;font-size:.95rem;letter-spacing:.02em;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(0,0);box-shadow:none}
+.btn svg{transition:transform .15s}
+.btn:hover svg{transform:translateX(4px)}
+.btn-yellow{background:var(--yellow);color:var(--on-yellow);border-color:var(--edge)}
+.btn-yellow:hover{box-shadow:4px 4px 0 var(--edge)}
+.btn-ghost:hover{background:var(--paper-2)}
+
+/* Header */
+.site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--paper);border-bottom:2px solid var(--ink)}
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:4.25rem}
+.brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;min-width:0}
+.brand svg{flex:none}
+.brand-text{display:flex;flex-direction:column;font-family:var(--f-display);font-weight:800;text-transform:uppercase;line-height:.95;font-size:1.25rem;letter-spacing:.02em}
+.brand-text span:last-child{font-weight:700;font-size:.95rem;letter-spacing:.14em;color:var(--ink-soft)}
+.nav{display:none;gap:.25rem}
+.nav a{padding:.55rem .85rem;text-decoration:none;font:500 .8rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;border-bottom:3px solid transparent;transition:border-color .15s,background .15s}
+.nav a:hover{border-bottom-color:var(--yellow);background:var(--paper-2)}
+.hdr-actions{display:flex;align-items:center;gap:.6rem}
+.hdr-actions .btn{min-height:2.75rem;display:none}
+.icon-btn{width:2.75rem;height:2.75rem;display:inline-grid;place-items:center;border:2px solid var(--ink);background:transparent;cursor:pointer;transition:background .15s}
+.icon-btn:hover{background:var(--paper-2)}
+.icon-btn[aria-pressed="true"]{background:var(--yellow);color:var(--on-yellow);border-color:var(--edge)}
+@media (min-width:640px){.hdr-actions .btn{display:inline-flex}}
+@media (min-width:900px){.nav{display:flex}}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;padding-block:clamp(2rem,6vw,4.5rem) clamp(2.5rem,6vw,4.5rem)}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:40px 40px;opacity:.6;-webkit-mask-image:linear-gradient(180deg,#000 35%,transparent);mask-image:linear-gradient(180deg,#000 35%,transparent);pointer-events:none}
+.hero>.wrap{position:relative}
+.hero h1{font-family:var(--f-display);font-weight:900;text-transform:uppercase;font-size:clamp(2.9rem,7.4vw,5.8rem);line-height:.9;letter-spacing:.003em;margin-block:1.1rem 1.4rem;text-wrap:balance}
+.hero h1 .cut{display:inline-block;background:var(--yellow);color:var(--on-yellow);padding:0 .14em;border:3px solid var(--edge)}
+.cta-row{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:1.8rem}
+.hero-specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:2.4rem;border-top:2px solid var(--ink)}
+.hero-specs>div{padding:.9rem .8rem .2rem 0}
+.hero-specs>div+div{padding-left:.8rem;border-left:1px solid var(--line)}
+.hero-specs dt{font:500 .68rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);order:2}
+.hero-specs dd{font-family:var(--f-display);font-weight:800;font-size:clamp(1.5rem,4.6vw,2.2rem);line-height:1;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.hero-specs>div{display:flex;flex-direction:column;gap:.35rem}
+
+/* Machine window */
+.machine{background:var(--panel);color:var(--panel-ink);border:2px solid var(--ink);box-shadow:6px 6px 0 var(--yellow);min-width:0}
+.machine-bar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.55rem .55rem .55rem .9rem;border-bottom:1px solid var(--panel-line);font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--panel-soft)}
+.mstat{display:flex;align-items:center;gap:.6rem;min-width:0}
+.led{flex:none;width:.6rem;height:.6rem;border-radius:50%;background:#2BD36B;box-shadow:0 0 0 3px rgba(43,211,107,.2)}
+.machine[data-state="paused"] .led{background:var(--yellow);box-shadow:0 0 0 3px rgba(255,196,0,.2)}
+.prog{color:var(--panel-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbtn{min-height:2.25rem;padding:0 .8rem;background:transparent;border:1px solid var(--panel-soft);color:var(--panel-ink);font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s,color .15s}
+.pbtn:hover{background:var(--yellow);color:var(--on-yellow);border-color:var(--yellow)}
+.machine :focus-visible{outline-color:var(--yellow)}
+#cnc{width:100%;aspect-ratio:4/3;background:radial-gradient(circle at 50% 45%,#121a2a,var(--panel) 70%)}
+.dro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--panel-line)}
+.dro>div{padding:.65rem .8rem;min-width:0}
+.dro>div+div{border-left:1px solid var(--panel-line)}
+.dro dt{font:500 .66rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--panel-soft)}
+.dro dd{font:500 clamp(.95rem,3.4vw,1.2rem) var(--f-mono);font-variant-numeric:tabular-nums;color:var(--yellow);white-space:nowrap}
+.dro.dro-2 dd{color:var(--panel-ink);font-size:clamp(.8rem,2.8vw,.95rem)}
+.gcode{border-top:1px solid var(--panel-line);padding:.7rem .9rem;font:400 clamp(.7rem,2.6vw,.8rem) var(--f-mono);color:var(--panel-soft);display:grid;gap:.15rem}
+.gcode li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gcode li::before{content:"  "}
+.gcode li[aria-current="true"]{color:var(--yellow)}
+.gcode li[aria-current="true"]::before{content:"▸ "}
+
+/* Material strip */
+.strip{background:var(--yellow);color:var(--on-yellow);border-block:2px solid var(--edge)}
+.strip-in{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 0;padding-block:.9rem}
+.strip-label{font:500 .72rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;margin-right:1.4rem}
+.strip li{font:500 .85rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:.2rem .9rem;border-left:2px solid var(--on-yellow);transition:background .15s,color .15s;cursor:default}
+.strip li:hover{background:var(--on-yellow);color:var(--yellow)}
+.strip ul{display:flex;flex-wrap:wrap}
+
+/* Sections */
+.sec{padding-block:clamp(3.5rem,8vw,6.5rem)}
+.sec-head{display:grid;gap:1.1rem;margin-bottom:clamp(2rem,5vw,3.2rem)}
+
+/* Services */
+.svc-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1px;background:var(--ink);border:2px solid var(--ink)}
+@media (min-width:700px){.svc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1060px){.svc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.card{position:relative;background:var(--paper);padding:1.7rem 1.6rem 1.8rem;display:flex;flex-direction:column;gap:.9rem;min-width:0;transition:background .2s,color .2s}
+.card:hover{background:var(--yellow);color:var(--on-yellow)}
+.card svg{width:2.75rem;height:2.75rem;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:square;stroke-linejoin:miter;transition:transform .25s}
+.card:hover svg{transform:rotate(-8deg) scale(1.06)}
+.card h3{font-family:var(--f-display);font-weight:800;font-size:1.7rem;text-transform:uppercase;line-height:1;letter-spacing:.01em}
+.card p{opacity:.8;text-wrap:pretty}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:auto;padding-top:.4rem}
+.chips li{font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid currentColor;padding:.2rem .5rem}
+.card::after{content:"+";position:absolute;right:.9rem;top:.6rem;font:400 1rem var(--f-mono);opacity:.35}
+
+/* Capabilities */
+.cap-grid{display:grid;gap:2rem;grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.cap-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:3rem}}
+.spec{width:100%;border-collapse:collapse;border:2px solid var(--ink)}
+.spec caption{caption-side:bottom;text-align:left;padding-top:.8rem;font:400 .78rem var(--f-mono);color:var(--ink-soft)}
+.spec th,.spec td{text-align:left;vertical-align:top;padding:.85rem 1rem;border-bottom:1px solid var(--ink)}
+.spec tr:last-child th,.spec tr:last-child td{border-bottom:0}
+.spec th{width:38%;font:500 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper-2);border-right:1px solid var(--ink)}
+.spec td{font-weight:500;font-variant-numeric:tabular-nums}
+.spec tbody tr{transition:background .15s}
+.spec tbody tr:hover td{background:var(--paper-2)}
+.explorer{background:var(--panel);color:var(--panel-ink);border:2px solid var(--ink);padding:1.5rem;display:flex;flex-direction:column;gap:1.1rem;min-width:0}
+.explorer h3{font:500 .72rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--panel-soft)}
+.tol-val{font-family:var(--f-display);font-weight:900;font-size:clamp(3rem,10vw,4.6rem);line-height:.9;color:var(--yellow);font-variant-numeric:tabular-nums}
+.tol-val small{font-size:.4em;font-weight:700;letter-spacing:.08em;color:var(--panel-soft);margin-left:.4rem}
+.gauge{position:relative;height:1rem;background:var(--panel-2);border:1px solid var(--panel-line)}
+.gauge::before{content:"";position:absolute;left:50%;top:-.35rem;bottom:-.35rem;width:1px;background:var(--panel-soft)}
+.gauge i{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);background:var(--yellow);transition:width .25s}
+.explorer input[type=range]{width:100%;height:2.25rem;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer}
+.explorer input[type=range]::-webkit-slider-runnable-track{height:4px;background:var(--panel-line)}
+.explorer input[type=range]::-moz-range-track{height:4px;background:var(--panel-line)}
+.explorer input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:1.4rem;height:1.9rem;margin-top:-.85rem;background:var(--yellow);border:2px solid var(--panel);box-shadow:0 0 0 2px var(--yellow)}
+.explorer input[type=range]::-moz-range-thumb{width:1.2rem;height:1.7rem;border-radius:0;background:var(--yellow);border:2px solid var(--panel)}
+.ticks{display:flex;justify-content:space-between;font:400 .68rem var(--f-mono);color:var(--panel-soft)}
+.tol-out{display:grid;gap:.5rem;border-top:1px solid var(--panel-line);padding-top:1rem}
+.tol-out strong{font-family:var(--f-display);font-size:1.5rem;font-weight:800;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.tol-out p{color:var(--panel-soft);text-wrap:pretty}
+.tol-out .cost{font:500 .75rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--panel-ink)}
+.explorer .note{font:400 .72rem var(--f-mono);color:var(--panel-soft)}
+
+/* Process */
+.process{background:var(--panel);color:var(--panel-ink)}
+.process .eyebrow{color:var(--panel-soft)}
+.process .lead{color:var(--panel-soft)}
+.steps{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+@media (min-width:760px){.steps{grid-template-columns:repeat(5,minmax(0,1fr));gap:1.4rem}}
+.steps li{position:relative;padding:1.2rem 0 1.4rem;border-top:2px dashed var(--panel-line);transition:border-color .2s,transform .2s}
+@media (min-width:760px){.steps li{padding-bottom:0}}
+.steps li:hover{border-top:2px solid var(--yellow);transform:translateY(-3px)}
+.steps .n{display:block;font:500 .8rem var(--f-mono);letter-spacing:.1em;color:var(--yellow);margin-bottom:.6rem}
+.steps h3{font-family:var(--f-display);font-weight:800;font-size:1.6rem;text-transform:uppercase;line-height:1;margin-bottom:.5rem}
+.steps p{color:var(--panel-soft);font-size:.95rem;text-wrap:pretty}
+
+/* Quote */
+.quote{background:var(--paper-2);border-block:2px solid var(--ink)}
+.q-grid{display:grid;gap:2.5rem;grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.q-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:4rem}}
+.contact{display:grid;gap:0;margin-top:1.8rem;border-top:2px solid var(--ink)}
+.contact>div{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--ink)}
+.contact dt{font:500 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);padding-top:.15rem}
+.contact dd{font-weight:500;overflow-wrap:anywhere;user-select:all}
+.ph{border-bottom:2px dashed var(--ink-soft)}
+.maplink{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.2rem;font-weight:600;text-decoration:none;border-bottom:3px solid var(--yellow);padding-bottom:.1rem;transition:background .15s}
+.maplink:hover{background:var(--yellow);color:var(--on-yellow)}
+form{background:var(--paper);border:2px solid var(--ink);padding:clamp(1.2rem,3vw,2rem);display:grid;gap:1.1rem;box-shadow:6px 6px 0 var(--edge)}
+.row2{display:grid;gap:1.1rem;grid-template-columns:minmax(0,1fr)}
+@media (min-width:600px){.row2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.field{display:grid;gap:.4rem;min-width:0}
+.field label,.field .lbl{font:500 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.field label b{color:var(--blue);font-weight:500}
+.field input,.field select,.field textarea{width:100%;min-height:3rem;padding:.7rem .85rem;background:var(--paper);border:2px solid var(--ink);border-radius:0;transition:box-shadow .15s,background .15s}
+.field textarea{min-height:6.5rem;resize:vertical}
+.field input:hover,.field select:hover,.field textarea:hover{background:var(--paper-2)}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:3px solid var(--focus);outline-offset:0;box-shadow:4px 4px 0 var(--yellow)}
+.drop{display:flex;align-items:center;gap:.9rem;padding:1.1rem;border:2px dashed var(--ink);cursor:pointer;transition:background .15s;min-width:0}
+.drop:hover,.drop.over{background:var(--yellow);color:var(--on-yellow);border-style:solid}
+.drop:focus-within{outline:3px solid var(--focus);outline-offset:3px}
+.drop svg{flex:none;width:2rem;height:2rem;fill:none;stroke:currentColor;stroke-width:1.6}
+.drop span{min-width:0;overflow-wrap:anywhere}
+.drop .small{display:block;font:400 .75rem var(--f-mono);opacity:.75;margin-top:.15rem}
+.result{border:2px solid var(--ink);background:var(--panel);color:var(--panel-ink);padding:1.2rem;display:grid;gap:.9rem}
+.result h3{font-family:var(--f-display);font-weight:800;font-size:1.6rem;text-transform:uppercase;color:var(--yellow);line-height:1}
+.result pre{margin:0;padding:.9rem;background:var(--panel-2);border:1px solid var(--panel-line);font:400 .8rem/1.55 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere}
+.result p{color:var(--panel-soft);font-size:.92rem}
+.result .btn{border-color:var(--panel-soft);color:var(--panel-ink)}
+.result .btn:hover{box-shadow:4px 4px 0 var(--yellow);border-color:var(--yellow)}
+.result .btn-yellow{background:var(--yellow);color:var(--on-yellow);border-color:var(--yellow)}
+.result :focus-visible{outline-color:var(--yellow)}
+
+/* Footer title block */
+.titleblock{padding-block:2.5rem 5.5rem}
+.tb{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:2px solid var(--ink)}
+@media (min-width:860px){.tb{grid-template-columns:2fr 1.4fr 1.6fr 1.4fr 1fr 0.7fr}}
+.tb>div{padding:.8rem 1rem;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);min-width:0}
+.tb dt{font:500 .64rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.tb dd{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:1.15rem;line-height:1.15;letter-spacing:.02em}
+.foot-links{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;margin-top:1.4rem;font:500 .78rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.foot-links a{text-decoration:none;border-bottom:2px solid transparent}
+.foot-links a:hover{border-bottom-color:var(--yellow)}
+.fine{margin-top:1rem;font-size:.82rem;color:var(--ink-soft)}
+
+/* Mobile quote bar */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;padding:.6rem 1rem calc(.6rem + env(safe-area-inset-bottom,0px));background:var(--paper);border-top:2px solid var(--ink);transition:transform .25s}
+.mbar .btn{flex:1}
+.mbar.off{transform:translateY(110%)}
+@media (min-width:900px){.mbar{display:none}.titleblock{padding-bottom:3rem}}
+@media (min-width:640px){.machine{box-shadow:8px 8px 0 var(--yellow)}}
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Chembur Engineering Works","telephone":"+919867223591","description":"CNC milling, CNC turning, fabrication, jigs and fixtures, and spares in Chembur, Mumbai.","address":{"@type":"PostalAddress","streetAddress":"Majithia Industrial Estate, 9, Waman Tukaram Patil Marg, MBPT Colony, Deonar","postalCode":"400088","addressLocality":"Chembur, Mumbai","addressRegion":"Maharashtra","addressCountry":"IN"},"areaServed":"Mumbai"}
+</script>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap hdr">
+    <a class="brand" href="#top" aria-label="Chembur Engineering Works, back to top">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <rect x="1" y="1" width="38" height="38" fill="#FFC400" stroke="currentColor" stroke-width="2"/>
+        <circle cx="20" cy="20" r="9" fill="none" stroke="#0A1020" stroke-width="2"/>
+        <path d="M20 5v8M20 27v8M5 20h8M27 20h8" stroke="#0A1020" stroke-width="2"/>
+        <circle cx="20" cy="20" r="2.2" fill="#0A1020"/>
+      </svg>
+      <span class="brand-text"><span>Chembur</span><span>Engineering Works</span></span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#process">Process</a>
+      <a href="#quote">Contact</a>
+    </nav>
+    <div class="hdr-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-pressed="false" aria-label="Dark mode">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+      </button>
+      <a class="btn btn-yellow" href="#quote">Get a quote</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="top" class="hero" aria-labelledby="h1">
+    <div class="wrap grid gap-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,.98fr)] lg:items-center lg:gap-14">
+      <div class="min-w-0">
+        <p class="eyebrow"><span class="dot"></span>CNC machine shop · Chembur, Mumbai</p>
+        <h1 id="h1">Precision parts, <span class="cut">cut</span> in Chembur.</h1>
+        <p class="lead">CNC milling, turning and fabrication for factories and workshops across Mumbai. Send a drawing or a sample part and get a price and lead time.</p>
+        <div class="cta-row">
+          <a class="btn btn-yellow" href="#quote">Request a quote
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#capabilities">See what we can hold</a>
+        </div>
+        <dl class="hero-specs">
+          <div><dd>±0.01 mm</dd><dt>Tightest, on request</dt></div>
+          <div><dd>1 – 5,000</dd><dt>Pieces per batch</dt></div>
+          <div><dd>3 + 4 axis</dd><dt>Milling and turning</dt></div>
+        </dl>
+      </div>
+
+      <figure class="machine" id="machine" data-state="running">
+        <div class="machine-bar">
+          <div class="mstat"><span class="led" aria-hidden="true"></span><span class="prog">O1042 · Flange plate</span></div>
+          <button class="pbtn" id="pbtn" type="button">Pause</button>
+        </div>
+        <canvas id="cnc" role="img" aria-label="Animated toolpath of an end mill cutting a flange plate: centre bore, four bolt holes, then the 120 by 80 millimetre outer profile."></canvas>
+        <dl class="dro" aria-hidden="true">
+          <div><dt>X mm</dt><dd id="dx">+000.000</dd></div>
+          <div><dt>Y mm</dt><dd id="dy">+000.000</dd></div>
+          <div><dt>Z mm</dt><dd id="dz">+005.000</dd></div>
+        </dl>
+        <dl class="dro dro-2" aria-hidden="true">
+          <div><dt>Spindle</dt><dd>8000 rpm</dd></div>
+          <div><dt>Feed</dt><dd id="df">RAPID</dd></div>
+          <div><dt>Tool</dt><dd>T01 Ø6 EM</dd></div>
+        </dl>
+        <ol class="gcode" id="gcode" aria-hidden="true">
+          <li>N10 M03 S8000</li>
+          <li>N20 G02 BORE Ø28</li>
+          <li>N30 G83 DRILL Ø9 ×4</li>
+          <li>N40 G01 PROFILE 120×80 R8</li>
+          <li>N50 M30</li>
+        </ol>
+        <figcaption class="sr-only">Illustration of a CNC program running. It is decorative and the pause button stops the animation.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap strip-in">
+      <span class="strip-label" id="stock-l">Stock on the rack</span>
+      <ul aria-labelledby="stock-l">
+        <li>Mild steel</li><li>EN8</li><li>EN24</li><li>SS 304</li><li>SS 316</li><li>Aluminium 6061</li><li>Brass</li><li>Copper</li><li>Cast iron</li><li>Nylon</li><li>Delrin</li><li>HDPE</li>
+      </ul>
+    </div>
+  </div>
+
+  <section id="services" class="sec" aria-labelledby="svc-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">A · Services</p>
+        <h2 class="h2" id="svc-h">Machined, fabricated and fixed under one roof.</h2>
+        <p class="lead">One shop for the part, the fixture that holds it and the spare that replaces it.</p>
+      </div>
+      <ul class="svc-grid">
+        <li class="card">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M15 4h14v10H15z"/><path d="M17 14l-2 18 7 8 7-8-2-18"/><path d="M18 21l8 4M18 28l8 4"/></svg>
+          <h3>CNC milling</h3>
+          <p>Pockets, profiles, slots, bores and threads in steel, stainless, aluminium and plastics, from a single piece to a production run.</p>
+          <ul class="chips"><li>Vertical machining</li><li>3 + 4 axis</li></ul>
+        </li>
+        <li class="card">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="16"/><circle cx="22" cy="22" r="5"/><path d="M22 6v11M22 27v11M6 22h11M27 22h11"/></svg>
+          <h3>CNC turning</h3>
+          <p>Shafts, bushes, sleeves, flanges and threaded parts, turned to your drawing with grooves, tapers and knurling.</p>
+          <ul class="chips"><li>Shafts</li><li>Bushes</li><li>Threads</li></ul>
+        </li>
+        <li class="card">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M6 36V8h7v21h25v7z"/><path d="M31 5l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>
+          <h3>Fabrication and welding</h3>
+          <p>Frames, guards, brackets, platforms and tanks cut, bent and welded from sheet, plate and section.</p>
+          <ul class="chips"><li>MIG</li><li>TIG</li><li>Arc</li></ul>
+        </li>
+        <li class="card">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><rect x="6" y="30" width="32" height="8"/><path d="M13 30V10h12v8"/><path d="M25 14h9M34 14v16"/></svg>
+          <h3>Jigs, fixtures and tooling</h3>
+          <p>Work-holding, gauges and dies that make your repeat jobs faster and keep every piece the same.</p>
+          <ul class="chips"><li>Work-holding</li><li>Gauges</li><li>Dies</li></ul>
+        </li>
+        <li class="card">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M5 10h34v7H5z"/><path d="M10 17v7M17 17v5M24 17v7M31 17v5"/><path d="M13 25l-4 14M13 25h8"/></svg>
+          <h3>Reverse engineering</h3>
+          <p>No drawing? Bring the worn or broken part. We measure it, draw it and make a replacement that fits.</p>
+          <ul class="chips"><li>From a sample</li><li>From a sketch</li></ul>
+        </li>
+        <li class="card">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="7"/><circle cx="22" cy="22" r="12"/><path d="M22 4v6M22 34v6M4 22h6M34 22h6M9.3 9.3l4.2 4.2M30.5 30.5l4.2 4.2M34.7 9.3l-4.2 4.2M13.5 30.5l-4.2 4.2"/></svg>
+          <h3>Plant spares</h3>
+          <p>Replacement shafts, gears, couplings and sleeves for pumps, gearboxes and process equipment, made fast to keep lines running.</p>
+          <ul class="chips"><li>Pumps</li><li>Gearboxes</li><li>Couplings</li></ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="capabilities" class="sec" style="padding-top:0" aria-labelledby="cap-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">B · Capabilities</p>
+        <h2 class="h2" id="cap-h">What the shop floor can hold.</h2>
+        <p class="lead">Typical limits for most jobs. Send the drawing and we confirm what applies to your part.</p>
+      </div>
+      <div class="cap-grid">
+        <div class="min-w-0">
+          <table class="spec">
+            <caption>Typical capability. Firm limits are confirmed against your drawing.</caption>
+            <tbody>
+              <tr><th scope="row">Milling envelope</th><td>Up to 600 × 400 × 400 mm (X × Y × Z)</td></tr>
+              <tr><th scope="row">Turning</th><td>Ø 6 to 250 mm, up to 500 mm long</td></tr>
+              <tr><th scope="row">Tolerance</th><td>±0.05 mm standard, ±0.01 mm on request</td></tr>
+              <tr><th scope="row">Surface finish</th><td>Ra 1.6 to 3.2 µm as machined</td></tr>
+              <tr><th scope="row">Batch size</th><td>1 to 5,000 pieces</td></tr>
+              <tr><th scope="row">Drawing formats</th><td>PDF, DWG, DXF, STEP, IGES, or a sample part</td></tr>
+              <tr><th scope="row">Inspection</th><td>Vernier, micrometer, bore gauge, height gauge, surface plate</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="explorer">
+          <h3>Tolerance check</h3>
+          <div class="tol-val" aria-hidden="true"><span id="tolNum">±0.05</span><small>mm</small></div>
+          <div class="gauge" aria-hidden="true"><i id="gauge" style="width:25%"></i></div>
+          <div>
+            <label class="sr-only" for="tol">Tolerance on your drawing, from loosest to tightest</label>
+            <input id="tol" type="range" min="0" max="4" step="1" value="2" aria-valuetext="plus or minus 0.05 millimetres">
+            <div class="ticks" aria-hidden="true"><span>±0.20</span><span>±0.10</span><span>±0.05</span><span>±0.02</span><span>±0.01</span></div>
+          </div>
+          <div class="tol-out" aria-live="polite">
+            <strong id="tolTitle">Precision CNC</strong>
+            <p id="tolText">A separate finishing pass and bore gauge checks. Typical for bearing seats and press fits.</p>
+            <span class="cost" id="tolCost">Cost impact: moderate</span>
+          </div>
+          <p class="note">General guidance. Your drawing decides the final method and price.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" class="sec process" aria-labelledby="pr-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">C · Process</p>
+        <h2 class="h2" id="pr-h">From drawing to dispatch.</h2>
+        <p class="lead">Five steps, no surprises on price or timing.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="n">N10</span><h3>Send</h3><p>Share the drawing, material and quantity. A photo of the part works too.</p></li>
+        <li><span class="n">N20</span><h3>Quote</h3><p>You get a price and a lead time, with any drawing questions raised up front.</p></li>
+        <li><span class="n">N30</span><h3>Program</h3><p>We prepare the toolpaths and work-holding, and prove the first cut.</p></li>
+        <li><span class="n">N40</span><h3>Machine</h3><p>Parts are cut with in-process checks on the critical dimensions.</p></li>
+        <li><span class="n">N50</span><h3>Inspect and ship</h3><p>Final inspection against your drawing, then packed and dispatched.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="quote" class="sec quote" aria-labelledby="q-h">
+    <div class="wrap q-grid">
+      <div class="min-w-0">
+        <p class="eyebrow">D · Contact</p>
+        <h2 class="h2" id="q-h" style="margin-top:1.1rem">Send the drawing. Get a price.</h2>
+        <p class="lead" style="margin-top:1.1rem">Fill in the form and copy the enquiry. Send it with your drawing and we reply with a price and lead time.</p>
+        <dl class="contact">
+          <div><dt>Director</dt><dd>Mr. Jayant Patel</dd></div>
+          <div><dt>Phone</dt><dd data-contact="phone">+91 98672 23591</dd></div>
+          <div><dt>Email</dt><dd class="ph" data-contact="email">info@yourdomain.in</dd></div>
+          <div><dt>Workshop</dt><dd data-contact="address">Majithia Industrial Estate, 9, Waman Tukaram Patil Marg, near DMart, near Shatabdi Hospital, MBPT Colony, Deonar, Chembur, Mumbai, Maharashtra 400088</dd></div>
+          <div><dt>Hours</dt><dd class="ph" data-contact="hours">Mon to Sat, 9:00 to 18:00</dd></div>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Majithia+Industrial+Estate+Waman+Tukaram+Patil+Marg+Deonar+Chembur+Mumbai+400088" target="_blank" rel="noopener">Open the workshop on the map
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+      </div>
+
+      <div class="min-w-0">
+        <form id="rfq" novalidate>
+          <div class="row2">
+            <div class="field"><label for="f-name">Your name <b>*</b></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+            <div class="field"><label for="f-phone">Phone or WhatsApp <b>*</b></label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
+          </div>
+          <div class="field"><label for="f-co">Company</label><input id="f-co" name="company" type="text" autocomplete="organization"></div>
+          <div class="field"><label for="f-part">What do you need made? <b>*</b></label><textarea id="f-part" name="part" required placeholder="Example: 50 pcs EN8 shaft, Ø32 × 180 mm, one keyway, drawing attached."></textarea></div>
+          <div class="row2">
+            <div class="field"><label for="f-mat">Material</label>
+              <select id="f-mat" name="material">
+                <option>Not sure yet</option><option>Mild steel</option><option>EN8</option><option>EN24</option><option>SS 304</option><option>SS 316</option><option>Aluminium 6061</option><option>Brass</option><option>Copper</option><option>Cast iron</option><option>Nylon or Delrin</option><option>Other</option>
+              </select></div>
+            <div class="field"><label for="f-qty">Quantity</label><input id="f-qty" name="qty" type="number" min="1" inputmode="numeric" placeholder="1"></div>
+          </div>
+          <div class="field">
+            <span class="lbl" id="drop-l">Drawing or photo</span>
+            <label class="drop" id="drop" aria-describedby="drop-l">
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 22V6M9 13l7-7 7 7M5 26h22"/></svg>
+              <span><span id="fileName">Choose a file or drop it here</span><span class="small">PDF, DWG, DXF, STEP, IGES, JPG, PNG</span></span>
+              <input class="sr-only" id="f-file" name="file" type="file" accept=".pdf,.dwg,.dxf,.step,.stp,.igs,.iges,.jpg,.jpeg,.png">
+            </label>
+          </div>
+          <div class="field"><label for="f-note">Anything else</label><textarea id="f-note" name="notes" style="min-height:4.5rem" placeholder="Tolerances, finish, delivery date"></textarea></div>
+          <p id="f-err" role="alert" style="color:var(--blue);font-weight:600" hidden>Add your name, phone and a short description of the part.</p>
+          <button class="btn btn-yellow" type="submit">Prepare my enquiry
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <div class="result" id="result" tabindex="-1" hidden style="margin-top:1.4rem">
+          <h3>Your enquiry is ready</h3>
+          <pre id="summary"></pre>
+          <p>Nothing has been sent yet. Copy this and send it, with your drawing, to the phone number shown beside the form.</p>
+          <div class="flex flex-wrap gap-3">
+            <button class="btn btn-yellow" id="copyBtn" type="button">Copy enquiry</button>
+            <a class="btn" id="waLink" href="#" target="_blank" rel="noopener" hidden>Send on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="titleblock">
+  <div class="wrap">
+    <dl class="tb">
+      <div><dt>Company</dt><dd>Chembur Engineering Works</dd></div>
+      <div><dt>Location</dt><dd>Deonar, Chembur, Mumbai</dd></div>
+      <div><dt>Work</dt><dd>Milling · Turning · Fabrication</dd></div>
+      <div><dt>Director</dt><dd>Mr. Jayant Patel</dd></div>
+      <div><dt>Rev</dt><dd>A · 11 Oct 2026</dd></div>
+      <div><dt>Sheet</dt><dd>1 of 1</dd></div>
+    </dl>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="#services">Services</a><a href="#capabilities">Capabilities</a><a href="#process">Process</a><a href="#quote">Contact</a>
+    </nav>
+    <p class="fine">© 2026 Chembur Engineering Works. All drawings sent to us are treated as confidential.</p>
+  </div>
+</footer>
+
+<div class="mbar" id="mbar"><a class="btn btn-yellow" href="#quote">Get a quote</a></div>
+
+<script>
+/* EDIT HERE: fill in your real details. Leave a value empty to keep the placeholder. */
+var CONTACT = { phone: "+91 98672 23591", whatsapp: "+91 98672 23591", email: "", address: "Majithia Industrial Estate, 9, Waman Tukaram Patil Marg, near DMart, near Shatabdi Hospital, MBPT Colony, Deonar, Chembur, Mumbai, Maharashtra 400088", hours: "" };
+
+(function () {
+  /* Contact details */
+  Object.keys(CONTACT).forEach(function (k) {
+    var v = CONTACT[k]; if (!v || k === "whatsapp") return;
+    document.querySelectorAll('[data-contact="' + k + '"]').forEach(function (el) { el.textContent = v; el.classList.remove("ph"); });
+  });
+
+  /* Theme toggle */
+  var root = document.documentElement, tbtn = document.getElementById("themeBtn");
+  function effective() { var a = root.getAttribute("data-theme"); if (a) return a; return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }
+  function syncTheme() { tbtn.setAttribute("aria-pressed", String(effective() === "dark")); }
+  try { var saved = localStorage.getItem("cew-theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  syncTheme();
+  tbtn.addEventListener("click", function () {
+    var next = effective() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("cew-theme", next); } catch (e) {}
+    syncTheme();
+  });
+
+  /* Mobile quote bar hides while the form is in view */
+  var mbar = document.getElementById("mbar"), qsec = document.getElementById("quote");
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e) { mbar.classList.toggle("off", e[0].isIntersecting); }, { threshold: 0.15 }).observe(qsec);
+  }
+
+  /* CNC toolpath animation */
+  var canvas = document.getElementById("cnc");
+  if (canvas && canvas.getContext) {
+    var ctx = canvas.getContext("2d");
+    var Y = "#FFC400", INK = "#E9EDF5", SOFT = "#9BA6BB", LINE = "#1E2738";
+    var PW = 120, PH = 80, RC = 8, CUTZ = -3, SAFEZ = 5, START = [-70, -50];
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var machine = document.getElementById("machine"), pbtn = document.getElementById("pbtn");
+    var dx = document.getElementById("dx"), dy = document.getElementById("dy"), dz = document.getElementById("dz"), dfeed = document.getElementById("df");
+    var glines = document.querySelectorAll("#gcode li");
+
+    function arc(cx, cy, r, a0, a1, n) { var p = [], i, a; for (i = 0; i <= n; i++) { a = a0 + (a1 - a0) * i / n; p.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]); } return p; }
+    function circle(cx, cy, r) { return arc(cx, cy, r, -Math.PI / 2, 1.5 * Math.PI, 40); }
+    function profile() {
+      var hw = PW / 2, hh = PH / 2, r = RC;
+      var p = [[-hw + r, -hh], [hw - r, -hh]]
+        .concat(arc(hw - r, -hh + r, r, -Math.PI / 2, 0, 8), [[hw, hh - r]], arc(hw - r, hh - r, r, 0, Math.PI / 2, 8), [[-hw + r, hh]],
+                arc(-hw + r, hh - r, r, Math.PI / 2, Math.PI, 8), [[-hw, -hh + r]], arc(-hw + r, -hh + r, r, Math.PI, 1.5 * Math.PI, 8));
+      p.push(p[0]); return p;
+    }
+    var holes = [[-44, -26], [44, -26], [44, 26], [-44, 26]];
+    var ops = [{ pts: circle(0, 0, 14), line: 1, f: 500 }];
+    holes.forEach(function (h) { ops.push({ pts: circle(h[0], h[1], 4.5), line: 2, f: 300 }); });
+    ops.push({ pts: profile(), line: 3, f: 800 });
+
+    var segs = [], cur = START, clock = 0;
+    function addSeg(pts, cut, line, f) {
+      var cum = [0], len = 0, i;
+      for (i = 1; i < pts.length; i++) { len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); cum.push(len); }
+      var dur = len / (cut ? 55 : 90);
+      segs.push({ pts: pts, cut: cut, line: line, f: f, cum: cum, len: len, dur: dur, t0: clock }); clock += dur;
+    }
+    ops.forEach(function (o) { addSeg([cur, o.pts[0]], false, o.line, 0); addSeg(o.pts, true, o.line, o.f); cur = o.pts[o.pts.length - 1]; });
+    addSeg([cur, START], false, 4, 0);
+    var TOTAL = clock, HOLD = 2.4;
+
+    function pointOn(s, d) {
+      var c = s.cum, i = 1;
+      while (i < c.length - 1 && c[i] < d) i++;
+      var a = s.pts[i - 1], b = s.pts[i], span = (c[i] - c[i - 1]) || 1, k = Math.min(1, Math.max(0, (d - c[i - 1]) / span));
+      return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+    }
+    function stateAt(t) {
+      var tt = Math.min(t, TOTAL - 1e-6), i, s;
+      for (i = 0; i < segs.length; i++) { s = segs[i]; if (tt < s.t0 + s.dur || i === segs.length - 1) break; }
+      var d = s.dur ? Math.min(s.len, (tt - s.t0) / s.dur * s.len) : s.len;
+      return { i: i, s: s, d: d, p: pointOn(s, d) };
+    }
+
+    var W = 0, H = 0, SC = 1, dpr = 1;
+    function size() {
+      var r = canvas.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height; canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); SC = Math.min(W / (PW + 50), H / (PH + 44));
+    }
+    function tp(x, y) { return [W / 2 + x * SC, H / 2 - y * SC]; }
+    function polyline(pts, upto, cum) {
+      var p = tp(pts[0][0], pts[0][1]), i, q, a, b, k;
+      ctx.moveTo(p[0], p[1]);
+      for (i = 1; i < pts.length; i++) {
+        if (upto !== undefined && cum[i] > upto) { a = pts[i - 1]; b = pts[i]; k = (upto - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1); q = tp(a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k); ctx.lineTo(q[0], q[1]); return; }
+        q = tp(pts[i][0], pts[i][1]); ctx.lineTo(q[0], q[1]);
+      }
+    }
+    function label(txt, x, y, align) { ctx.fillStyle = SOFT; ctx.font = "500 11px 'IBM Plex Mono',monospace"; ctx.textAlign = align || "center"; ctx.textBaseline = "middle"; ctx.fillText(txt, x, y); }
+
+    var zCur = SAFEZ;
+    function draw(t) {
+      var st = stateAt(t), hx = (W / 2) / SC, hy = (H / 2) / SC, x, y, p, q, j, s;
+      ctx.clearRect(0, 0, W, H);
+      ctx.lineWidth = 1; ctx.strokeStyle = LINE; ctx.beginPath();
+      for (x = Math.ceil(-hx / 10) * 10; x <= hx; x += 10) { p = tp(x, -hy); q = tp(x, hy); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); }
+      for (y = Math.ceil(-hy / 10) * 10; y <= hy; y += 10) { p = tp(-hx, y); q = tp(hx, y); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); }
+      ctx.stroke();
+      ctx.strokeStyle = SOFT; ctx.globalAlpha = 0.45; ctx.beginPath();
+      p = tp(-hx, 0); q = tp(hx, 0); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      p = tp(0, -hy); q = tp(0, hy); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke(); ctx.globalAlpha = 1;
+      label("X+", W - 16, H / 2 - 9, "center"); label("Y+", W / 2 + 14, 12, "center");
+      /* planned path */
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = SOFT; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.beginPath();
+      segs.forEach(function (sg) { if (sg.cut) polyline(sg.pts); }); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+      /* cut trail */
+      ctx.strokeStyle = Y; ctx.lineWidth = 2.4; ctx.lineJoin = "round"; ctx.beginPath();
+      for (j = 0; j <= st.i; j++) { s = segs[j]; if (s.cut) polyline(s.pts, j === st.i ? st.d : s.len, s.cum); }
+      ctx.stroke();
+      /* dimensions */
+      ctx.strokeStyle = INK; ctx.globalAlpha = 0.65; ctx.lineWidth = 1; ctx.beginPath();
+      var yy = PH / 2 + 10, xx = -(PW / 2 + 10);
+      p = tp(-PW / 2, PH / 2 + 3); q = tp(-PW / 2, yy + 3); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      p = tp(PW / 2, PH / 2 + 3); q = tp(PW / 2, yy + 3); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      p = tp(-PW / 2, yy); q = tp(PW / 2, yy); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      p = tp(-PW / 2 - 3, PH / 2); q = tp(xx - 3, PH / 2); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      p = tp(-PW / 2 - 3, -PH / 2); q = tp(xx - 3, -PH / 2); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      p = tp(xx, -PH / 2); q = tp(xx, PH / 2); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      ctx.stroke(); ctx.globalAlpha = 1;
+      p = tp(0, yy); label("120", p[0], p[1] - 9); p = tp(xx, 0); label("80", p[0] - 12, p[1]);
+      /* tool */
+      var tpos = tp(st.p[0], st.p[1]), r = 3 * SC;
+      ctx.strokeStyle = Y; ctx.lineWidth = 1.5; ctx.fillStyle = "rgba(255,196,0,0.2)";
+      ctx.beginPath(); ctx.arc(tpos[0], tpos[1], r, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(tpos[0] - r - 9, tpos[1]); ctx.lineTo(tpos[0] + r + 9, tpos[1]); ctx.moveTo(tpos[0], tpos[1] - r - 9); ctx.lineTo(tpos[0], tpos[1] + r + 9); ctx.stroke();
+      if (zCur < 0) { ctx.fillStyle = Y; ctx.beginPath(); ctx.arc(tpos[0], tpos[1], 2.2, 0, 6.2832); ctx.fill(); }
+      return st;
+    }
+
+    function fmt(v) { if (Math.abs(v) < 0.0005) v = 0; var a = Math.abs(v).toFixed(3); while (a.length < 7) a = "0" + a; return (v < 0 ? "-" : "+") + a; }
+    var lastLine = -1, lastFeed = "";
+    function ui(st) {
+      dx.textContent = fmt(st.p[0]); dy.textContent = fmt(st.p[1]); dz.textContent = fmt(zCur);
+      var line = st.s.line, feed = st.s.cut ? "F" + st.s.f : "RAPID";
+      if (feed !== lastFeed) { dfeed.textContent = feed; lastFeed = feed; }
+      if (line !== lastLine) { glines.forEach(function (li, i) { if (i === line) li.setAttribute("aria-current", "true"); else li.removeAttribute("aria-current"); }); lastLine = line; }
+    }
+
+    var t = 0, last = 0, raf = 0, userPaused = reduce, visible = true;
+    function frame(ts) {
+      var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+      t += dt; if (t > TOTAL + HOLD) { t = 0; zCur = SAFEZ; }
+      var cutting = stateAt(t).s.cut && t < TOTAL;
+      zCur += ((cutting ? CUTZ : SAFEZ) - zCur) * Math.min(1, dt * 14);
+      ui(draw(t));
+      raf = requestAnimationFrame(frame);
+    }
+    function sync() {
+      var run = !userPaused && visible;
+      if (run && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+      if (!run && raf) { cancelAnimationFrame(raf); raf = 0; }
+      machine.setAttribute("data-state", userPaused ? "paused" : "running");
+      pbtn.textContent = userPaused ? "Play" : "Pause";
+    }
+    function still() { ui(draw(t)); }
+    size();
+    if (reduce) { t = TOTAL + 0.01; zCur = SAFEZ; }
+    still(); sync();
+    pbtn.addEventListener("click", function () { userPaused = !userPaused; sync(); });
+    if ("ResizeObserver" in window) new ResizeObserver(function () { size(); still(); }).observe(canvas);
+    else window.addEventListener("resize", function () { size(); still(); });
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; sync(); }, { threshold: 0.05 }).observe(canvas);
+  }
+
+  /* Tolerance check */
+  var tol = document.getElementById("tol");
+  var TOLS = [
+    { v: "0.20", w: 100, t: "General machining", d: "Standard tooling and vernier checks. The lowest cost per part.", c: "lowest" },
+    { v: "0.10", w: 50, t: "Standard CNC", d: "Routine for most milled and turned parts, checked with micrometers.", c: "low" },
+    { v: "0.05", w: 25, t: "Precision CNC", d: "A separate finishing pass and bore gauge checks. Typical for bearing seats and press fits.", c: "moderate" },
+    { v: "0.02", w: 10, t: "Tight tolerance", d: "Slower finishing cuts and more inspection time per part. Tell us which features need it.", c: "higher" },
+    { v: "0.01", w: 5, t: "Very tight", d: "Some features may need grinding or honing. Ask us before relying on this number.", c: "highest, confirm first" }
+  ];
+  function setTol() {
+    var o = TOLS[+tol.value];
+    document.getElementById("tolNum").textContent = "±" + o.v;
+    document.getElementById("gauge").style.width = o.w + "%";
+    document.getElementById("tolTitle").textContent = o.t;
+    document.getElementById("tolText").textContent = o.d;
+    document.getElementById("tolCost").textContent = "Cost impact: " + o.c;
+    tol.setAttribute("aria-valuetext", "plus or minus " + o.v + " millimetres, " + o.t);
+  }
+  tol.addEventListener("input", setTol); setTol();
+
+  /* Quote form */
+  var form = document.getElementById("rfq"), err = document.getElementById("f-err"), result = document.getElementById("result");
+  var summary = document.getElementById("summary"), copyBtn = document.getElementById("copyBtn"), wa = document.getElementById("waLink");
+  var file = document.getElementById("f-file"), fileName = document.getElementById("fileName"), drop = document.getElementById("drop");
+  function showFile() { fileName.textContent = file.files && file.files[0] ? file.files[0].name : "Choose a file or drop it here"; }
+  file.addEventListener("change", showFile);
+  ["dragenter", "dragover"].forEach(function (n) { drop.addEventListener(n, function (e) { e.preventDefault(); drop.classList.add("over"); }); });
+  ["dragleave", "drop"].forEach(function (n) { drop.addEventListener(n, function (e) { e.preventDefault(); drop.classList.remove("over"); }); });
+  drop.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) { try { file.files = e.dataTransfer.files; } catch (x) {} showFile(); }
+  });
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var n = form.name.value.trim(), p = form.phone.value.trim(), d = form.part.value.trim();
+    if (!n || !p || !d) { err.hidden = false; (!n ? form.name : !p ? form.phone : form.part).focus(); return; }
+    err.hidden = true;
+    var f = file.files && file.files[0] ? file.files[0].name + " (attach this file when you send)" : "To be sent separately";
+    var lines = ["Enquiry for Chembur Engineering Works", "Name: " + n, "Phone: " + p];
+    if (form.company.value.trim()) lines.push("Company: " + form.company.value.trim());
+    lines.push("Part: " + d, "Material: " + form.material.value, "Quantity: " + (form.qty.value || "Not stated"), "Drawing: " + f);
+    if (form.notes.value.trim()) lines.push("Notes: " + form.notes.value.trim());
+    var txt = lines.join("\n");
+    summary.textContent = txt;
+    var digits = (CONTACT.whatsapp || "").replace(/\D/g, "");
+    if (digits) { wa.href = "https://wa.me/" + digits + "?text=" + encodeURIComponent(txt); wa.hidden = false; } else { wa.hidden = true; }
+    result.hidden = false; copyBtn.textContent = "Copy enquiry";
+    result.scrollIntoView({ block: "nearest" }); result.focus({ preventScroll: true });
+  });
+  function selectSummary() { var r = document.createRange(); r.selectNodeContents(summary); var s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = "Selected, now copy"; }
+  copyBtn.addEventListener("click", function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(summary.textContent).then(function () { copyBtn.textContent = "Copied"; setTimeout(function () { copyBtn.textContent = "Copy enquiry"; }, 2000); }, selectSummary);
+    } else selectSummary();
+  });
+})();
+</script>
